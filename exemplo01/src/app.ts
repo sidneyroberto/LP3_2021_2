@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import logger from 'morgan'
 
+import { clientsRouter } from './routes/clients'
+
 /**
  * Cria uma aplicação com express
  */
@@ -22,41 +24,11 @@ app.use(logger('dev'))
  */
 app.use(express.json())
 
-const clientes = [
-    {
-        id: 1,
-        nome: 'Sidney Sousa',
-        telefone: '9999-9999'
-    },
-    {
-        id: 2,
-        nome: 'Daiane Sampaio',
-        telefone: '8888-8888'
-    },
-    {
-        id: 3,
-        nome: 'Leandro Magalhães',
-        telefone: '7777-7777'
-    }
-]
 
 /**
- * Serviço para retornar todos os clientes
+ * Registra o caminho /clients e
+ * associa ao roteador clientsRouter
  */
-app.get("/clientes", (req, res) => {
-    res.json(clientes)
-})
-
-/**
- * Serviço para retornar um cliente específico
- * Obs: precisa ser refatorado!
- */
-app.get("/clientes/unico/:id", (req, res) => {
-    // const id = req.params.id
-    const { id } = req.params
-    const idCliente: number = parseInt(id)
-    const clienteEncontrado = clientes.find(c => c.id == idCliente)
-    res.json(clienteEncontrado)
-})
+app.use('/clients', clientsRouter)
 
 
