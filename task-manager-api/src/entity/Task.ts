@@ -42,7 +42,7 @@ export class Task {
         this.priorityLevel = priorityLevel
     }
 
-    isValid(): STATUS[] {
+    validate(): STATUS[] {
         let statuses = []
 
         if (this.description.length < 5) {

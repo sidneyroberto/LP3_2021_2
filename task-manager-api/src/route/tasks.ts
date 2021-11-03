@@ -30,7 +30,7 @@ taskRouter.get('/priority-levels', (req, res) => {
 taskRouter.post('/', async (req, res) => {
     const { description, deadline, priorityLevel } = req.body
     const task = new Task(description, new Date(deadline), priorityLevel)
-    const statuses: STATUS[] = task.isValid()
+    const statuses: STATUS[] = task.validate()
     if (statuses.length == 1 && statuses[0] == STATUS.OK) {
         const savedTask = await taskCtrl.save(task)
         return res.json(savedTask)
