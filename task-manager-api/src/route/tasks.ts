@@ -1,8 +1,11 @@
 import { Router } from 'express'
+import { UserController } from '../controller/UserController'
 import { TaskController } from '../controller/TaskController'
 import { PriorityLevel, STATUS, Task } from '../entity/Task'
+import { User } from '../entity/User'
 
 const taskCtrl = new TaskController()
+const userCtrl = new UserController()
 export const taskRouter = Router()
 
 /**
@@ -28,8 +31,14 @@ taskRouter.get('/priority-levels', (req, res) => {
  * Salva uma nova tarefa
  */
 taskRouter.post('/', async (req, res) => {
-    const { description, deadline, priorityLevel } = req.body
-    const task = new Task(description, new Date(deadline), priorityLevel)
+    const { description, deadline, priorityLevel, userId } = req.body
+
+    let user: User = null
+    if (userId) {
+        user = await userCtrl.findById(userId)
+    }
+
+    const task = new Task(description, new Date(deadline), priorityLevel, user)
     const statuses: STATUS[] = task.validate()
     if (statuses.length == 1 && statuses[0] == STATUS.OK) {
         const savedTask = await taskCtrl.save(task)

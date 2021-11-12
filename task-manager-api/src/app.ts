@@ -3,7 +3,7 @@ import * as cors from 'cors'
 import * as logger from 'morgan'
 
 import { taskRouter } from './route/tasks'
-
+import { userRouter } from './route/users'
 import { connectToDB } from './config/db'
 
 /**
@@ -32,3 +32,8 @@ connectToDB()
  * Registra os endpoints de tarefas
  */
 app.use('/tasks', taskRouter)
+
+/**
+ * Registra os endpoints de usuários
+ */
+app.use('/users', userRouter)

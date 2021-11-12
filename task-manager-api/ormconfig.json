@@ -5,7 +5,7 @@
    "username": "devtaskmanager",
    "password": "senha123",
    "database": "taskmanager",
-   "synchronize": true,
+   "synchronize": false,
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"

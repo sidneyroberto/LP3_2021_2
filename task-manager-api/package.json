@@ -9,10 +9,12 @@
       "@types/node": "^8.0.29",
       "nodemon": "^2.0.13",
       "ts-node": "3.3.0",
+      "tsconfig-paths": "^3.11.0",
       "typescript": "3.3.3333"
    },
    "dependencies": {
       "cors": "^2.8.5",
+      "email-validator": "^2.0.4",
       "express": "^4.17.1",
       "morgan": "^1.10.0",
       "pg": "^8.4.0",
@@ -21,6 +23,8 @@
    },
    "scripts": {
       "start": "ts-node src/server.ts",
-      "dev": "nodemon --exec ts-node src/server.ts"
+      "dev": "nodemon --exec ts-node src/server.ts",
+      "migrate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate",
+      "migrations": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run"
    }
 }

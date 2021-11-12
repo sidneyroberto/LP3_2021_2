@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { User } from "./User"
 
 export enum PriorityLevel {
     LOW, MEDIUM, HIGH,
@@ -36,10 +37,18 @@ export class Task {
     @Column()
     priorityLevel: PriorityLevel
 
-    constructor(description: string, deadline: Date, priorityLevel: PriorityLevel) {
+    @ManyToOne(() => User)
+    user: User
+
+    constructor(
+        description: string,
+        deadline: Date,
+        priorityLevel: PriorityLevel,
+        user?: User) {
         this.description = description
         this.deadline = deadline
         this.priorityLevel = priorityLevel
+        this.user = user
     }
 
     validate(): STATUS[] {
@@ -49,7 +58,7 @@ export class Task {
             statuses.push(STATUS.BAD_DESCRIPTION)
         }
 
-        if (this.deadline < new Date()) {
+        if (!this._isDeadlineValid()) {
             statuses.push(STATUS.BAD_DEADLINE)
         }
 
@@ -62,5 +71,11 @@ export class Task {
         }
 
         return statuses
+    }
+
+    private _isDeadlineValid(): boolean {
+        const currentDate = new Date(new Date().toDateString())
+        const dateToBeCompared = new Date(this.deadline.toDateString())
+        return dateToBeCompared.getTime() >= currentDate.getTime()
     }
 }
